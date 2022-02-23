@@ -6,6 +6,10 @@ import com.example.demo.orm.Worker;
 import com.example.demo.repositories.PositionRepository;
 import com.example.demo.repositories.WorkUnitRepository;
 import com.example.demo.repositories.WorkerRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -49,7 +53,7 @@ public class CrudWorkerService {
                     update(scanner);
                     break;
                 case 3:
-                    list();
+                    list(scanner);
                     break;
                 case 4:
                     delete(scanner);
@@ -145,9 +149,17 @@ public class CrudWorkerService {
 
     }
 
-    private void list() {
-        Iterable<Worker> workersIterable = workerRepository.findAll();
-        workersIterable.forEach(w -> System.out.println(w.toString()));
+    private void list(Scanner scanner) {
+        System.out.println("Insert a page to view: ");
+        Integer page = scanner.nextInt();
+
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "name"));
+        Page<Worker> workersPage = workerRepository.findAll(pageable);
+
+        System.out.println(workersPage);
+        System.out.println("Current page: " + workersPage.getNumber());
+        System.out.println("Total elements in page: " + workersPage.getTotalElements());
+        workersPage.forEach(w -> System.out.println(w.toString()));
     }
 
     private void delete(Scanner scanner) {
