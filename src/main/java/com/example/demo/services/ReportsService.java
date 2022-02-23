@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.orm.Worker;
+import com.example.demo.orm.WorkerProjection;
 import com.example.demo.repositories.WorkerRepository;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class ReportsService {
             System.out.println("1 - Search worker by name");
             System.out.println("2 - Search worker by name, hiring date and greater salary");
             System.out.println("3 - Search worker by hiring date");
+            System.out.println("4 - List workers by salary");
 
             int action = scanner.nextInt();
 
@@ -40,6 +42,9 @@ public class ReportsService {
                     break;
                 case 3:
                     searchWorkerHiringDate(scanner);
+                    break;
+                case 4:
+                    searchWorkerSalary();
                     break;
                 default:
                     system = false;
@@ -78,5 +83,10 @@ public class ReportsService {
 
         List<Worker> list = workerRepository.findHiringDateGreater(localDate);
         list.forEach(System.out::println);
+    }
+
+    private void searchWorkerSalary() {
+        List<WorkerProjection> list = workerRepository.findWorkersSalaries();
+        list.forEach(w -> System.out.println("Worker: id= " + w.getId() + "\t|\tname= " + w.getName() + "\t|\tsalary= " + w.getSalary()));
     }
 }

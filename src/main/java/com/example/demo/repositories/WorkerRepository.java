@@ -2,6 +2,7 @@ package com.example.demo.repositories;
 
 import com.example.demo.orm.Worker;
 import com.example.demo.orm.WorkerProjection;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface WorkerRepository extends PagingAndSortingRepository<Worker, Integer> {
+public interface WorkerRepository extends PagingAndSortingRepository<Worker, Integer>, JpaSpecificationExecutor<Worker> {
     // Derived query method
     List<Worker> findByName(String name);
 
